@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
-  root "home#index"
+  root 'home#index'
+  namespace :slack do
+    get 'auth/redirect', to: 'auth#sign_in'
+    get 'auth/sign_out', to: 'auth#sign_out'
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

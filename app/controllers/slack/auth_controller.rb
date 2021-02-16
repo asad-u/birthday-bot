@@ -3,7 +3,7 @@ class Slack::AuthController < ApplicationController
   before_action :authenticate_user!, only: :sign_out
 
   def sign_in
-    oauth_service = Slack::Oauth.new(params[:code])
+    oauth_service = Slack::Oauth.new(params[:code], slack_auth_redirect_url)
     user_and_organization = oauth_service.sign_in_user
     if user_and_organization.present?
       session[:user_identifier] = user_and_organization.first&.slack_id

@@ -2,12 +2,13 @@
 
 module Slack
   class Oauth
-    def initialize(code)
+    def initialize(code, redirect_uri)
       @code = code
       @request_token_params = {
         client_id: ENV['SLACK_CLIENT_ID'],
         client_secret: ENV['SLACK_APP_SECRET'],
-        code: @code
+        code: @code,
+        redirect_uri: redirect_uri
       }
     end
 

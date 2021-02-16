@@ -4,7 +4,7 @@
   <h2>Sign in successful. <%= current_user.full_name %></h2>
   <%= link_to 'Sign out', slack_auth_sign_out_path %>
 <% else %>
-  <a href="https://slack.com/oauth/v2/authorize?user_scope=identity.basic,identity.email,identity.team,identity.avatar&client_id=981375555424.1676545878743&redirect_uri=<%= slack_auth_redirect_url %>">
+  <a href="https://slack.com/oauth/v2/authorize?user_scope=identity.basic,identity.email,identity.team,identity.avatar&client_id=<%= ENV['SLACK_CLIENT_ID'] %>&redirect_uri=<%= slack_auth_redirect_url %>">
     <img alt="Sign in with Slack" height="40" width="172" src="https://platform.slack-edge.com/img/sign_in_with_slack.png" srcset="https://platform.slack-edge.com/img/sign_in_with_slack.png 1x, https://platform.slack-edge.com/img/sign_in_with_slack@2x.png 2x" />
   </a>
 <% end %>

@@ -1,5 +1,6 @@
 class Slack::AuthController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :sign_in
+  before_action :authenticate_user!, only: :sign_out
 
   def sign_in
     oauth_service = Slack::Oauth.new(params[:code])

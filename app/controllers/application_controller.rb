@@ -4,4 +4,8 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user ||= User.find_by(slack_id: session[:user_identifier]) if session[:user_identifier]
   end
+
+  def authenticate_user!
+    redirect_to root_path unless current_user
+  end
 end

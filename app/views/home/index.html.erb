@@ -1,7 +1,18 @@
 <h1>Slack Birthday Bot!</h1>
 
-<% if current_user.present? %>
-  <h2>Sign in successful. <%= current_user.full_name %></h2>
+<% if @current_user.present? %>
+  <h2>Welcome <%= @current_user.full_name %></h2>
+  <% @organizations.each do |organization| %>
+    <h3><%= organization.name %>:</h3>
+    <% if organization.installed_in_slack? %>
+      Bot is added in this workspace
+    <% else %>
+      <a href="https://slack.com/oauth/v2/authorize?scope=incoming-webhook,chat:write,im:write,team:read,users:read,commands&client_id=<%= ENV['SLACK_CLIENT_ID'] %>&redirect_uri=<%= slack_install_url %>">
+        <img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"/>
+      </a>
+    <%  end %>
+  <% end %>
+  <br>
   <%= link_to 'Sign out', slack_auth_sign_out_path %>
 <% else %>
   <a href="https://slack.com/oauth/v2/authorize?user_scope=identity.basic,identity.email,identity.team,identity.avatar&client_id=<%= ENV['SLACK_CLIENT_ID'] %>&redirect_uri=<%= slack_auth_redirect_url %>">

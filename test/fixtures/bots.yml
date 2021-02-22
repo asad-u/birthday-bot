@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bot_id: MyString
+  user_access_token: MyString
+  bot_access_token: MyString
+  source: MyString
+  belongs_to: 
+
+two:
+  bot_id: MyString
+  user_access_token: MyString
+  bot_access_token: MyString
+  source: MyString
+  belongs_to: 

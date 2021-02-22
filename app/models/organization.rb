@@ -3,9 +3,9 @@ class Organization < ApplicationRecord
 
   has_many :organization_users
   has_many :users, through: :organization_users
+  has_many :bots
 
   belongs_to :primary_contact, class_name: 'User', foreign_key: :primary_contact_id
-  enum status: { installed: 'installed', uninstalled: 'uninstalled', installation_pending: 'installation_pending' }
 
   scope :from_omniauth, lambda { |team_info, user|
     create do |organization|
@@ -16,4 +16,12 @@ class Organization < ApplicationRecord
       organization.primary_contact_id = user.id
     end
   }
+
+  def primary_contact_name
+    primary_contact&.full_name
+  end
+
+  def installed_in_slack?
+    bots.slack.installed.present?
+  end
 end

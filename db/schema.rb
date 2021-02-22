@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_16_081333) do
+ActiveRecord::Schema.define(version: 2021_02_18_103716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bots", force: :cascade do |t|
+    t.string "bot_id"
+    t.string "bot_access_token"
+    t.string "source"
+    t.string "channel_name"
+    t.string "channel_id"
+    t.string "webhook_configuration_url"
+    t.string "webhook_url"
+    t.bigint "organization_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "status", default: "installed"
+    t.index ["organization_id"], name: "index_bots_on_organization_id"
+  end
 
   create_table "organization_users", force: :cascade do |t|
     t.bigint "user_id"
@@ -29,7 +44,6 @@ ActiveRecord::Schema.define(version: 2021_02_16_081333) do
     t.string "slack_id"
     t.string "domain"
     t.string "logo"
-    t.string "status", default: "installation_pending"
     t.bigint "primary_contact_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

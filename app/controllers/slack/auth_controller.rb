@@ -1,6 +1,6 @@
 class Slack::AuthController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: :sign_in
-  before_action :authenticate_user!, only: :sign_out
+  skip_before_action :verify_authenticity_token, only: [:sign_in, :install]
+  before_action :authenticate_user!, only: [:sign_out, :install]
 
   def sign_in
     oauth_service = Slack::Oauth.new(params[:code], slack_auth_redirect_url)
@@ -16,5 +16,17 @@ class Slack::AuthController < ApplicationController
   def sign_out
     session[:user_identifier] = nil
     redirect_to root_path
+  end
+
+  def install
+    request_response = Slack::Oauth.new(params[:code], slack_install_url).request_access_token
+    if request_response['ok']
+      install_service = Slack::InstallConfig.new(request_response)
+      settings = install_service.update_database
+      install_service.send_opening_message(settings)
+      redirect_to root_path, notice: 'Successfully installed.'
+    else
+      redirect_to root_path, alert: 'There was a problem installing the app.'
+    end
   end
 end

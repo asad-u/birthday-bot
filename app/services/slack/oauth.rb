@@ -13,14 +13,18 @@ module Slack
     end
 
     def sign_in_user
-      request_url = URI::HTTPS.build(host: 'www.slack.com', path: '/api/oauth.v2.access', query: @request_token_params.to_query)
-      request_response = HTTParty.get request_url
+      request_response = request_access_token
       return unless request_response['ok']
 
       @user = User.find_by_slack_id request_response['authed_user']['id']
       @organization = Organization.find_by_slack_id request_response['team']['id']
       organization_and_user(request_response) if @user.blank? || @organization.blank?
       [@user, @organization]
+    end
+
+    def request_access_token
+      request_url = URI::HTTPS.build(host: 'www.slack.com', path: '/api/oauth.v2.access', query: @request_token_params.to_query)
+      HTTParty.get request_url
     end
 
     private

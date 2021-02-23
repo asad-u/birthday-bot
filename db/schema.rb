@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_18_103716) do
+ActiveRecord::Schema.define(version: 2021_02_22_091326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "birthdays", force: :cascade do |t|
+    t.date "date"
+    t.bigint "user_id", null: false
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_birthdays_on_organization_id"
+    t.index ["user_id"], name: "index_birthdays_on_user_id"
+  end
 
   create_table "bots", force: :cascade do |t|
     t.string "bot_id"
@@ -59,4 +69,6 @@ ActiveRecord::Schema.define(version: 2021_02_18_103716) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "birthdays", "organizations"
+  add_foreign_key "birthdays", "users"
 end

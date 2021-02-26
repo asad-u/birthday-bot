@@ -5,7 +5,7 @@ module SlackInteraction
 
   included do
     skip_before_action :verify_authenticity_token
-    before_action :verify_slack_request, :parse_payload, :set_organization, :set_user
+    before_action :verify_slack_request, :parse_payload, :set_organization, :find_or_create_user
   end
 
   def interaction
@@ -39,8 +39,8 @@ module SlackInteraction
     @organization = Organization.find_by_slack_id @payload['user']['team_id']
   end
 
-  def set_user
-    @user = User.includes(:birthday).find_by_slack_id @payload['user']['id']
+  def find_or_create_user
+    @user = User.includes(:birthday).first_or_create(slack_id: @payload['user']['id'])
   end
 
   def update_birthday_modal

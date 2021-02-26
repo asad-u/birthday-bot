@@ -18,7 +18,13 @@ module Slack
 
       @user = User.find_by_slack_id request_response['authed_user']['id']
       @organization = Organization.find_by_slack_id request_response['team']['id']
-      organization_and_user(request_response) if @user.blank? || @organization.blank?
+      if @user.blank? || @organization.blank?
+        organization_and_user(request_response)
+      elsif @user&.email.blank?
+        info = request_user_identity(request_response['authed_user']['access_token'])
+        @user.update(email: info['user']['email'], full_name: info['name'], image_url: info['image_512'])
+      end
+
       [@user, @organization]
     end
 

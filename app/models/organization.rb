@@ -4,6 +4,7 @@ class Organization < ApplicationRecord
   has_many :organization_users
   has_many :users, through: :organization_users
   has_many :bots
+  has_many :birthdays
 
   belongs_to :primary_contact, class_name: 'User', foreign_key: :primary_contact_id
 
@@ -23,5 +24,12 @@ class Organization < ApplicationRecord
 
   def installed_in_slack?
     bots.slack.installed.present?
+  end
+
+  def initialize_slack_token
+    Slack.configure do |config|
+      config.token = (bots.find_by source: 'slack').bot_access_token
+    end
+    Slack::Web::Client.new
   end
 end

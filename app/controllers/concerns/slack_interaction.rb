@@ -14,6 +14,9 @@ module SlackInteraction
       client.views_open(trigger_id: @payload['trigger_id'], view: update_birthday_modal)
     else
       add_birthday
+      Thread.new do
+        send_personal_message(client)
+      end
     end
   end
 
@@ -79,6 +82,14 @@ module SlackInteraction
 
   def add_birthday
     date = @payload['view']['state']['values'].values.last['datepicker-action']['selected_date']
-    Birthday.update_or_create({ user_id: @user.id, organization_id: @organization.id }, { date: date })
+    @birthday = Birthday.update_or_create({ user_id: @user.id, organization_id: @organization.id }, { date: date })
+  end
+
+  def send_personal_message(client)
+    client.chat_postMessage(channel: @user.slack_id, text: personal_message)
+  end
+
+  def personal_message
+    "Thanks #{@user.full_name} for adding your birthday. I'll make sure to remind everyone before `#{@birthday.date&.strftime("%d %B")}` about the special day."
   end
 end

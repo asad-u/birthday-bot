@@ -6,5 +6,8 @@ Rails.application.routes.draw do
     get 'install', to: 'auth#install'
     post 'interaction', to: 'callbacks#interaction'
   end
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

@@ -60,3 +60,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'httparty'
 # for slack api calls
 gem 'slack-ruby-bot'
+# for background jobs
+gem 'sidekiq'

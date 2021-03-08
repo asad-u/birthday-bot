@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  self.strict_loading_by_default = true
 
   has_many :organization_users
   has_many :organizations, through: :organization_users

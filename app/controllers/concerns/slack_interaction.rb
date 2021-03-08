@@ -44,6 +44,7 @@ module SlackInteraction
 
   def find_or_create_user
     @user = User.includes(:birthday).where(slack_id: @payload['user']['id']).first_or_create
+    @user.update(full_name: @payload['user']['name']) if @user&.full_name.blank?
   end
 
   def update_birthday_modal
@@ -90,6 +91,6 @@ module SlackInteraction
   end
 
   def personal_message
-    "Thanks #{@user.full_name} for adding your birthday. I'll make sure to remind everyone before `#{@birthday.date&.strftime("%d %B")}` about the special day."
+    "Thank you for adding your birthday. I'll make sure to remind everyone before `#{@birthday.date&.strftime("%d %B")}` about the special day."
   end
 end

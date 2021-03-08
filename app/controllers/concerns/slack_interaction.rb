@@ -43,7 +43,7 @@ module SlackInteraction
   end
 
   def find_or_create_user
-    @user = User.includes(:birthday).first_or_create(slack_id: @payload['user']['id'])
+    @user = User.includes(:birthday).where(slack_id: @payload['user']['id']).first_or_create
   end
 
   def update_birthday_modal

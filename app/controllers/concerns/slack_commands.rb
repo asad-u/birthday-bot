@@ -18,7 +18,7 @@ module SlackCommands
   def listing_message(birthdays_hash)
     if birthdays_hash.present?
       text = "Here is the list of upcoming birthdays\n\n"
-      Hash[birthdays_hash.sort_by { |k, _v| k.month && k.day }].each do |date, birthdays|
+      birthdays_hash.each do |date, birthdays|
         birthdays.each do |birthday|
           text << "<@#{birthday.user&.slack_id}>: #{date&.strftime('%d %b, %Y')}\n"
         end

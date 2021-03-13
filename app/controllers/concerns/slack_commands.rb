@@ -20,7 +20,7 @@ module SlackCommands
       text = "Here is the list of upcoming birthdays\n\n"
       Hash[birthdays_hash.sort_by { |k, _v| k.month && k.day }].each do |date, birthdays|
         birthdays.each do |birthday|
-          text << "*#{birthday.user&.full_name}*: #{date&.strftime('%d %b, %Y')}"
+          text << "<@#{birthday.user&.slack_id}>: #{date&.strftime('%d %b, %Y')}\n"
         end
       end
     else

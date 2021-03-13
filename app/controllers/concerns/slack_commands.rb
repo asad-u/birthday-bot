@@ -9,19 +9,17 @@ module SlackCommands
   end
 
   def birthdays_listing
-    birthdays_hash = @organization.birthdays.group_by_month(series: true, &:date)
-    HTTParty.post(params[:response_url], body: listing_message(birthdays_hash).to_json)
+    birthdays = @organization.birthdays
+    HTTParty.post(params[:response_url], body: listing_message(birthdays).to_json)
   end
 
   private
 
-  def listing_message(birthdays_hash)
-    if birthdays_hash.present?
-      text = "Here is the list of upcoming birthdays\n\n"
-      birthdays_hash.each do |date, birthdays|
-        birthdays.each do |birthday|
-          text << "<@#{birthday.user&.slack_id}>: #{date&.strftime('%d %b, %Y')}\n"
-        end
+  def listing_message(birthdays)
+    if birthdays.present?
+      text = "Here is the list of added birthdays\n\n"
+      birthdays.each do |birthday|
+        text << "<@#{birthday.user&.slack_id}>: #{birthday.date&.strftime('%d %b, %Y')}\n"
       end
     else
       text = 'No birthdays added yet. You can use /birthday command to add yours now :wink:'

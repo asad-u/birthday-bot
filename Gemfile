@@ -62,5 +62,3 @@ gem 'httparty'
 gem 'slack-ruby-bot'
 # for background jobs
 gem 'sidekiq'
-# for dates filter
-gem 'groupdate'

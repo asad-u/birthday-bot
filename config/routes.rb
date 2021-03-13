@@ -5,6 +5,11 @@ Rails.application.routes.draw do
     get 'auth/sign_out', to: 'auth#sign_out'
     get 'install', to: 'auth#install'
     post 'interaction', to: 'callbacks#interaction'
+    resources :commands, only: [] do
+      collection do
+        post :birthday
+      end
+    end
   end
 
   require 'sidekiq/web'

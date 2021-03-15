@@ -3,7 +3,6 @@ module SlackCommands
   include ApplicationHelper
 
   def update_modal
-    @user = User.find_by_slack_id params[:user_id]
     client = @organization.initialize_slack_token
     client.views_open(trigger_id: params[:trigger_id], view: update_birthday_modal)
   end

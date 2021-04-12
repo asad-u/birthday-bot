@@ -24,7 +24,7 @@ class PostBirthdayMessageJob < ApplicationJob
           "type": 'image',
           "title": {
             "type": 'plain_text',
-            "text": 'Happy Birthday',
+            "text": 'Happy Birthday Powered by GIPHY',
             "emoji": true
           },
           "image_url": gif.present? ? gif : 'https://media.giphy.com/media/lNByEO1uTbVAikv8oT/giphy.gif',

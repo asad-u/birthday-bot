@@ -7,11 +7,10 @@ class PostBirthdayMessageJob < ApplicationJob
 
   private
 
-
   def message_body(message)
     gif = birthday_gif
-
     {
+      "text": "Hey guys! It's time to wish someone a birthday.",
       "blocks": [
         {
           "type": 'section',

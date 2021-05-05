@@ -27,7 +27,7 @@ class Organization < ApplicationRecord
 
   def initialize_slack_token
     Slack.configure do |config|
-      config.token = (bots.find_by source: 'slack').bot_access_token
+      config.token = (bots.find_by source: 'slack').access_token
     end
     Slack::Web::Client.new
   end

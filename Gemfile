@@ -62,3 +62,5 @@ gem 'httparty'
 gem 'slack-ruby-bot'
 # for background jobs
 gem 'sidekiq'
+# securing sensitive information
+gem 'lockbox'

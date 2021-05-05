@@ -1,7 +1,7 @@
 class Bot < ApplicationRecord
   belongs_to :organization
 
-  encrypts :access_token, migrate: true
+  encrypts :access_token
 
   enum status: { installed: 'installed', uninstalled: 'uninstalled' }
   enum source: { slack: 'slack' }

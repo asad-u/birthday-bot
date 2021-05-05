@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_05_094651) do
+ActiveRecord::Schema.define(version: 2021_05_05_114151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,7 +27,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_094651) do
 
   create_table "bots", force: :cascade do |t|
     t.string "bot_id"
-    t.string "access_token"
     t.string "source"
     t.string "channel_name"
     t.string "channel_id"

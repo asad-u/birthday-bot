@@ -6,7 +6,8 @@ module SlackInteraction
 
   included do
     skip_before_action :verify_authenticity_token
-    before_action :verify_slack_request, :parse_payload, :set_organization, :find_or_create_user
+    before_action :verify_slack_request
+    before_action :parse_payload, :set_organization, :find_or_create_user, only: [:interaction]
   end
 
   def interaction

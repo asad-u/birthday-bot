@@ -10,12 +10,13 @@ module Slack
       @organization = Organization.includes(:primary_contact).find_by_slack_id @response['team']['id']
       @user = User.find_by_slack_id @response['authed_user']['id']
       @organization.update(primary_contact: @user)
+      reinstalling = @organization.bots.slack.present?
       bot = @organization.bots.create_bot(@response)
-      [bot, @organization.primary_contact_name]
+      [bot, reinstalling, @organization.primary_contact_name]
     end
 
-    def send_opening_message(settings)
-      HTTParty.post(settings.first&.webhook_url, body: opening_message(settings.last).to_json)
+    def send_opening_message(bot, contact_name)
+      HTTParty.post(bot.webhook_url, body: opening_message(contact_name).to_json)
     end
 
     private

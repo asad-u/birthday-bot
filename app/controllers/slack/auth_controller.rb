@@ -22,8 +22,8 @@ class Slack::AuthController < ApplicationController
     request_response = Slack::Oauth.new(params[:code], slack_install_url).request_access_token
     if request_response['ok']
       install_service = Slack::InstallConfig.new(request_response)
-      settings = install_service.update_database
-      install_service.send_opening_message(settings)
+      bot, reinstalling, contact_name = install_service.update_database
+      install_service.send_opening_message(bot, contact_name) unless reinstalling
       redirect_to root_path, notice: 'Successfully installed.'
     else
       redirect_to root_path, alert: 'There was a problem installing the app.'

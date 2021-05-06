@@ -22,7 +22,7 @@ class Organization < ApplicationRecord
   end
 
   def installed_in_slack?
-    bots.slack.installed.present?
+    bots.where(source: 'slack', status: 'installed').present?
   end
 
   def initialize_slack_token
@@ -30,5 +30,10 @@ class Organization < ApplicationRecord
       config.token = (bots.find_by source: 'slack').access_token
     end
     Slack::Web::Client.new
+  end
+
+  def app_uninstalled
+    bot = bots.find_by_source 'slack'
+    bot.update(status: 'uninstalled')
   end
 end

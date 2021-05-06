@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     get 'auth/sign_out', to: 'auth#sign_out'
     get 'install', to: 'auth#install'
     post 'interaction', to: 'callbacks#interaction'
+    post 'event_hook', to: 'callbacks#event_hook'
+
     resources :commands, only: [] do
       collection do
         post :birthday

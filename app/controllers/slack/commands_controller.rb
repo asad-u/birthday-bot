@@ -5,7 +5,7 @@ module Slack
     before_action :verify_slack_request, :set_user, :set_organization
 
     def birthday
-      send which_command
+      which_command
       head :ok
     end
 

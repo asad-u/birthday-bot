@@ -11,12 +11,20 @@ module SlackInteraction
   end
 
   def interaction
-    client = @organization.initialize_slack_token
-    if @payload['type'] == 'block_actions'
-      client.views_open(trigger_id: @payload['trigger_id'], view: update_birthday_modal)
-    else
+    case @payload['type']
+    when 'block_actions'
+      case @payload['actions'][0]['action_id']
+      when 'add-birthday'
+        trigger_modal
+      when 'next-birthday'
+        next_birthday_message
+      when 'complete-list'
+        birthdays_listing
+      end
+    when 'view_submission'
       add_birthday
       Thread.new do
+        client = @organization.initialize_slack_token
         send_personal_message(client)
       end
     end
@@ -30,6 +38,17 @@ module SlackInteraction
 
   def set_organization
     @organization = Organization.find_by_slack_id @payload['user']['team_id']
+  end
+
+  def trigger_modal
+    client = @organization.initialize_slack_token
+    client.views_open(trigger_id: @payload['trigger_id'], view: update_birthday_modal)
+  end
+
+  def next_birthday_message
+    next_birthday = @organization.next_birthday
+    text = next_birthday.present? ? "<@#{next_birthday.user.slack_id}>: #{next_birthday.date.strftime('%d %b, %Y')}" : 'No birthdays added.'
+    HTTParty.post(@payload['response_url'], body: { text: text }.to_json)
   end
 
   def find_or_create_user

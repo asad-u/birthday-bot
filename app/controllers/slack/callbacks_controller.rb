@@ -1,6 +1,6 @@
 module Slack
   class CallbacksController < ApplicationController
-    include SlackInteraction
+    include SlackInteraction, SlackCommands
     SUBSCRIBED_HOOKS = ['app_uninstalled']
 
     def event_hook

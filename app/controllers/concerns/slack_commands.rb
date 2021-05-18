@@ -2,6 +2,8 @@ module SlackCommands
   extend ActiveSupport::Concern
   include ApplicationHelper
 
+  private
+
   def update_modal
     client = @organization.initialize_slack_token
     client.views_open(trigger_id: params[:trigger_id], view: update_birthday_modal)
@@ -9,10 +11,18 @@ module SlackCommands
 
   def birthdays_listing
     birthdays = @organization.birthdays
+    params[:response_url] ||= @payload['response_url']
     HTTParty.post(params[:response_url], body: listing_message(birthdays).to_json)
   end
 
-  private
+  def help_message
+    HTTParty.post(params[:response_url], body: helpers.help_message_blocks.to_json)
+  end
+
+  def unknown_command
+    text = "Hmm.. I didn't quite get this one :thinking_face:. I can easily get distracted.\n• Use `/birthday` to add your birthday :birthday:.\n• Use `/birthday list` to get list of added birthdays :scroll:.\n• Use `/birthday help` to ask for help :blush:."
+    HTTParty.post(params[:response_url], body: { text: text }.to_json)
+  end
 
   def listing_message(birthdays)
     if birthdays.present?
@@ -21,7 +31,7 @@ module SlackCommands
         text << "<@#{birthday.user&.slack_id}>: #{birthday.date&.strftime('%d %b, %Y')}\n"
       end
     else
-      text = 'No birthdays added yet. You can use /birthday command to add yours now :wink:'
+      text = 'No birthdays added yet. You can use `/birthday` command to add yours now :wink:'
     end
     { text: text }
   end

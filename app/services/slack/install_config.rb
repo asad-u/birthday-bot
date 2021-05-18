@@ -23,6 +23,7 @@ module Slack
 
     def opening_message(name)
       {
+        "text": 'Hi guys your birthdays manager is here :smiley:!',
         "blocks": [
           {
             "type": 'section',
@@ -33,10 +34,10 @@ module Slack
           },
           {
             "type": 'actions',
-            "block_id": 'add-birthday',
             "elements": [
               {
                 "type": 'button',
+                "action_id": 'add-birthday',
                 "text": {
                   "type": 'plain_text',
                   "text": 'Add your birthday :birthday:',

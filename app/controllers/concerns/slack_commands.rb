@@ -19,6 +19,11 @@ module SlackCommands
     HTTParty.post(params[:response_url], body: helpers.help_message_blocks.to_json)
   end
 
+  def unknown_command
+    text = "Hmm.. I didn't quite get this one :thinking_face:. I can easily get distracted.\n• Use `/birthday` to add your birthday :birthday:.\n• Use `/birthday list` to get list of added birthdays :scroll:.\n• Use `/birthday help` to ask for help :blush:."
+    HTTParty.post(params[:response_url], body: { text: text }.to_json)
+  end
+
   def listing_message(birthdays)
     if birthdays.present?
       text = "Here is the list of added birthdays\n\n"

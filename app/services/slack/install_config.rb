@@ -23,7 +23,7 @@ module Slack
 
     def opening_message(name)
       {
-        "text": 'Hello Asad!',
+        "text": 'Hi guys your birthdays manager is here :smiley:!',
         "blocks": [
           {
             "type": 'section',

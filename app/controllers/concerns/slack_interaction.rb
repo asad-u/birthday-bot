@@ -54,6 +54,7 @@ module SlackInteraction
   def find_or_create_user
     @user = User.includes(:birthday).where(slack_id: @payload['user']['id']).first_or_create
     @user.update(full_name: @payload['user']['name']) if @user&.full_name.blank?
+    @organization.users << @user unless @user.organizations.include?(@organization)
   end
 
   def add_birthday

@@ -23,6 +23,7 @@ module Slack
       elsif @user&.email.blank?
         info = request_user_identity(request_response['authed_user']['access_token'])
         @user.update(email: info['user']['email'], full_name: info['name'], image_url: info['image_512'])
+        @organization.users << @user unless @user.organizations.include?(@organization)
       end
 
       [@user, @organization]

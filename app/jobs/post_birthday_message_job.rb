@@ -7,11 +7,10 @@ class PostBirthdayMessageJob < ApplicationJob
 
   private
 
-
   def message_body(message)
     gif = birthday_gif
-
     {
+      "text": "Hey guys! It's time to wish someone a birthday.",
       "blocks": [
         {
           "type": 'section',
@@ -24,7 +23,7 @@ class PostBirthdayMessageJob < ApplicationJob
           "type": 'image',
           "title": {
             "type": 'plain_text',
-            "text": 'Happy Birthday',
+            "text": 'Happy Birthday Powered by GIPHY',
             "emoji": true
           },
           "image_url": gif.present? ? gif : 'https://media.giphy.com/media/lNByEO1uTbVAikv8oT/giphy.gif',
